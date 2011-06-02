@@ -6,6 +6,7 @@
 
 import json
 import time
+import calendar
 import urllib
 import httplib
 
@@ -70,12 +71,12 @@ def htmlStatuses_id(statuses_id):
   html_text = '<span "statuses_id=%s"></span>' % statuses_id
   return html_text
 
-def OnePage(tweets,screen_name):
+def OnePage(tweets,screen_name,utc_offset):
   content = []
   for item in tweets:
     created_time = time.strptime(item["created_at"],'%a %b %d %H:%M:%S +0000 %Y')
-    created_time = time.mktime(created_time) + 28800
-    created_time = time.strftime("%b-%d-%Y %H:%M:%S",time.localtime(created_time))
+    created_time = calendar.timegm(created_time) + utc_offset
+    created_time = time.strftime("%b-%d-%Y %H:%M:%S",time.gmtime(created_time))
     statuses_id = htmlStatuses_id(item["id"])
     source = htmlSource(item["source"])
     line = "</br>%s | %s  %s %s" % (created_time,item["text"],source,statuses_id)
@@ -104,6 +105,7 @@ def main():
 
   # obtain the statuses count from your lastest tweet.
   tweets = parserTwitter(screen_name,1,1,"yes")
+  utc_offset = tweets[0]["user"]["utc_offset"]
   tweets_count = tweets[0]["user"]["statuses_count"]
   if tweets_count > 3200:
     tweets_count = 3200
@@ -117,7 +119,7 @@ def main():
   for index in pageindex_list:
     # current_index = page_count - index + 1
     tweets = parserTwitter(screen_name,pagesize,index,oldestfirst)
-    b = OnePage(tweets,screen_name).encode("utf-8")
+    b = OnePage(tweets,screen_name,utc_offset).encode("utf-8")
     entire = htmlPageHeader() + b + pageFooter(current_index) + htmlPageFooter()
     action.write(entire)
     print "process... %d/%d" % (current_index,page_count)
