@@ -10,5 +10,7 @@
 
 另外：Twitter官方的限制，所有用户只能获取到最近的3200条推，早于3200条的推目前阶段无法备份；匿名用户每小时调用API次数限制为150次，请勿短时间内对大量用户做备份操作。
 
+本程序没有翻墙功能，故需要在无墙环境下使用:) （墙 means China's Great Fire Wall）
+
 Project Home: http://pagebrin.com/projects/backup-tweets
 
