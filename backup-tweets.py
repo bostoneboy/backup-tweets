@@ -116,16 +116,20 @@ def main():
   action.write(htmlHeader(screen_name))
 
   current_index = 1
+  print "process...",
   for index in pageindex_list:
-    # current_index = page_count - index + 1
+    current_index = page_count - index + 1
     tweets = parserTwitter(screen_name,pagesize,index,oldestfirst)
     b = OnePage(tweets,screen_name,utc_offset).encode("utf-8")
     entire = htmlPageHeader() + b + pageFooter(current_index) + htmlPageFooter()
     action.write(entire)
-    print "process... %d/%d" % (current_index,page_count)
+    if current_index == 1:
+      print "%2d/%2d" % (current_index,page_count),
+    else:
+      print "\b\b\b\b\b\b%2d/%2d" % (current_index,page_count),
     current_index += 1
   action.close()
-  print "success."
+  print "success!"
 
 if __name__ == "__main__":
   main()
