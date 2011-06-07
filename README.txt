@@ -12,5 +12,3 @@
 
 本程序没有翻墙功能，故需要在无墙环境下使用:) （墙 means China's Great Fire Wall）
 
-Project Home: http://pagebrin.com/projects/backup-tweets
-
